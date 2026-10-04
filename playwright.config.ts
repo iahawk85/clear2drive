@@ -16,12 +16,21 @@ export default defineConfig({
         reuseExistingServer: !process.env.CI,
       },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"] } },
+    {
+      name: "desktop",
+      testIgnore: "**/webkit-offline.spec.ts",
+      use: { ...devices["Desktop Chrome"] },
+    },
     {
       name: "iphone",
+      testIgnore: "**/webkit-offline.spec.ts",
       use: { ...devices["iPhone 13"], defaultBrowserType: "chromium" },
     },
-    { name: "android", use: { ...devices["Pixel 7"] } },
+    {
+      name: "android",
+      testIgnore: "**/webkit-offline.spec.ts",
+      use: { ...devices["Pixel 7"] },
+    },
     { name: "webkit-iphone", use: { ...devices["iPhone 13"] } },
   ],
 });
