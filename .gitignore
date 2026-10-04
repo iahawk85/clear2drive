@@ -1,0 +1,8 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.playwright-cli/
+.env*
+!.env.example
+qa-artifacts/
