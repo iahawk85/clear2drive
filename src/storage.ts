@@ -42,11 +42,14 @@ export function load(): Stored {
     validate(s.person, [], Date.now());
     if (
       !jurisdictions.includes(s.jurisdiction) ||
-      !(s.licence in licences) ||
+      !Object.hasOwn(licences, s.licence) ||
       ![0, 0.02, 0.05].includes(s.threshold) ||
+      !Number.isFinite(s.margin) ||
       s.margin < 90 ||
       s.margin > 720 ||
-      !s.accepted
+      s.accepted !== true ||
+      (["learner", "provisional", "unsure"].includes(s.licence) &&
+        s.threshold !== 0)
     )
       throw new Error("Invalid saved settings.");
   }

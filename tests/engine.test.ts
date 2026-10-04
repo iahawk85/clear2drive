@@ -189,6 +189,15 @@ describe("invalid inputs", () => {
   );
   it("rejects future timestamps", () =>
     expect(() => estimate(person, [drink(1, t + 1)], t, 0.05)).toThrow());
+  it("rejects prototype names as body-composition options", () => {
+    expect(() =>
+      validate(
+        { ...person, composition: "toString" as typeof person.composition },
+        [],
+        t,
+      ),
+    ).toThrow();
+  });
   it("rejects invalid timestamps, ages, thresholds and shortened margins", () => {
     expect(() => estimate(person, [drink(1, NaN)], t, 0.05)).toThrow();
     expect(() => validate({ ...person, age: 17 }, [], t)).toThrow();

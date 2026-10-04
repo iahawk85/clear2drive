@@ -62,7 +62,7 @@ export function validate(person: Person, drinks: Drink[], now: number) {
     person.height > 250
   )
     throw new Error("Enter a height between 100 and 250 cm.");
-  if (!(person.composition in factors))
+  if (!Object.hasOwn(factors, person.composition))
     throw new Error("Choose a body-composition option.");
   if (
     person.age !== undefined &&

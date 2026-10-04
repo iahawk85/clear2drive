@@ -1,7 +1,15 @@
 # Release QA
 
-Unit reference cases, input validation and absolute-time/DST checks are in `tests/engine.test.ts`. Browser journeys are in `tests/e2e/app.spec.ts`, exercising desktop Chromium, iPhone-size Chromium, Android-size Chromium, and iPhone-size WebKit. Release evidence is updated after the final run.
+Release verified on 4 October 2026. Strict TypeScript production build and ESLint pass. All 47 engine/storage tests pass, including independent numerical reference cases, midnight, daylight saving transitions, future/invalid inputs, extreme supported weights, licence limits and corrupted storage. npm audit reports zero known vulnerabilities.
 
-Tests exercise personal profile creation, timestamped dynamic additions, BAC threshold configuration, reload persistence, offline reload and addition, stopped-drinking countdown language, archiving/history/deletion, morning-after times crossing midnight, volume/ABV conversion, zero-BAC advice, horizontal overflow and axe accessibility checks. Test data lives in isolated browser contexts and is never included as production session data.
+Eight browser journeys pass across desktop Chromium, iPhone 13 size Chromium (390 × 844), Pixel 7 size Chromium (393 × 851), and iPhone 13 size WebKit. The full journeys also passed against the HTTPS production domain. Extra onboarding checks at widths 360, 375, 412 and 430 show no document overflow. Dashboard axe checks report zero violations in all four projects. This is automated coverage, not certification of every accessibility requirement.
+
+Chromium PWA installation and launch were performed in a disposable profile through the browser's PWA protocol, with standalone mode confirmed and an installed offline reload verified. The browser protocol installation defaults to a browser window; the disposable test profile's display preference was set to standalone before launch. The actual manifest specifies standalone. Manifest, icons, service worker, self-hosted font, iPhone launch images, HTTPS certificate, CSP, and HTTP → HTTPS redirect are present. No real personal data was used during testing.
+
+Windows Playwright WebKit reports an internal error on offline navigation. Its loaded-app offline calculation passes; offline reload passes in all Chromium projects and the installed Chromium PWA. The test only skips WebKit offline navigation on Windows; Linux CI exercises that navigation. Physical iPhone/Android installation, iOS home-screen offline reload and splash rendering remain unverified on hardware. Do not present browser emulation as physical-device testing.
+
+Tests exercise personal profile creation, timestamped dynamic additions, BAC threshold configuration, reload persistence, offline reload and addition, stopped-drinking countdown language both before and after zero, archiving/history/deletion, morning-after times crossing midnight, volume/ABV conversion, zero-BAC advice, horizontal overflow and axe accessibility checks. Test data lives in isolated browser contexts and is never included as production session data.
+
+Run `npm run lint`, `npm test`, `npm run build`, and `npm run test:e2e`. To test a deployed origin set `PLAYWRIGHT_BASE_URL=https://clear2drive.pwatrm.com` before running browser tests; this skips the local preview server. GitHub Actions also runs all build/unit/browser checks on Ubuntu.
 
 No automated test can establish medical accuracy, real breath alcohol concentration, or permission to drive. Physical iPhone and Android installation requires device testing; browser emulation is reported separately.

@@ -1050,14 +1050,21 @@ export default function App() {
               <button
                 className="danger-button full"
                 onClick={() => {
-                  localStorage.removeItem(KEY);
-                  setCorrupt(false);
-                  setStorageError("");
-                  setData(EMPTY);
-                  setModal(null);
-                  setNotice(
-                    "All personal details and sessions deleted from this browser.",
-                  );
+                  try {
+                    localStorage.removeItem(KEY);
+                    setCorrupt(false);
+                    setStorageError("");
+                    setData(EMPTY);
+                    setModal(null);
+                    setNotice(
+                      "All personal details and sessions deleted from this browser.",
+                    );
+                  } catch {
+                    setStorageError(
+                      "Browser storage could not be cleared. Clear this site's data in your browser settings.",
+                    );
+                    setModal(null);
+                  }
                 }}
               >
                 Delete all data

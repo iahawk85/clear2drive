@@ -50,7 +50,11 @@ test("real session, immediate updates, persistence, offline, history and deletio
     .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller))
     .toBe(true);
   await context.setOffline(true);
-  if (test.info().project.name !== "webkit-iphone") await page.reload();
+  if (
+    test.info().project.name !== "webkit-iphone" ||
+    process.platform !== "win32"
+  )
+    await page.reload();
   else
     test.info().annotations.push({
       type: "limitation",
@@ -69,6 +73,13 @@ test("real session, immediate updates, persistence, offline, history and deletio
   await expect(
     page.getByText(
       "This countdown is an estimate. Reaching zero is not confirmation of sobriety.",
+    ),
+  ).toBeVisible();
+  await page.clock.fastForward("24:00:00");
+  await expect(page.locator(".countdown strong")).toHaveText("00:00:00");
+  await expect(
+    page.getByText(
+      "Waiting estimate reached. BAC and fitness to drive remain unconfirmed. Use a reliable breath test.",
     ),
   ).toBeVisible();
   await page

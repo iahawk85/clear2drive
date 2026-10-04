@@ -58,4 +58,16 @@ describe("local storage schema", () => {
     );
     expect(() => load()).toThrow();
   });
+  it("rejects corrupted licence limits and nonnumeric margins", () => {
+    for (const changes of [
+      { licence: "learner", threshold: 0.05 },
+      { licence: "toString" },
+      { margin: "invalid" },
+    ]) {
+      saved(
+        JSON.stringify({ ...good, settings: { ...good.settings, ...changes } }),
+      );
+      expect(() => load()).toThrow();
+    }
+  });
 });
