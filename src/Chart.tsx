@@ -1,5 +1,5 @@
 import { memo } from "react";
-import type { Drink, Point } from "./engine";
+import { valueAt, type Drink, type Point } from "./engine";
 import { clock } from "./time";
 interface Props {
   points: Point[];
@@ -138,8 +138,15 @@ export default memo(function Chart({
           </>
         ) : null}
         {threshold > 0 && below <= end ? (
-          <circle cx={marker(below)} cy={y(threshold)} r="5" fill="#e7b578">
-            <title>Estimated final threshold crossing: {clock(below)}</title>
+          <circle
+            cx={marker(below)}
+            cy={y(valueAt(points, below))}
+            r="5"
+            fill="#e7b578"
+          >
+            <title>
+              Estimated below threshold after absorption: {clock(below)}
+            </title>
           </circle>
         ) : null}
         {drinks.length ? (
